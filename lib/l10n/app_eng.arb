@@ -1,0 +1,7 @@
+    {
+     "loginButton": "Login",
+  "registerButton": "Register",
+  "validatorEmail": "Please enter your email address.",
+  "validatorName": "Please enter your name.",
+  "validatorPassword": "Please enter your password."
+    }

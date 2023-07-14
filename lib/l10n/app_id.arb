@@ -1,0 +1,7 @@
+ {
+        "loginButton":"Masuk",
+        "registerButton":"Buat Akun"
+        "validatorEmail":"Silakan masukkan alamat email Anda.",
+        "validatorName":"Silakan masukkan alamat nama Anda.",
+        "validatorPassword":"Silakan masukkan kata sandi Anda.",
+    }

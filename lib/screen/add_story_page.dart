@@ -1,0 +1,199 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
+import 'package:story_app_1/provider/image_provider.dart';
+import 'package:story_app_1/provider/upload_provider.dart';
+
+import '../provider/list_story_provider.dart';
+
+class AddStoryPage extends StatefulWidget {
+  final Function() onSend;
+  const AddStoryPage({
+    Key? key,
+    required this.onSend,
+  }) : super(key: key);
+
+  @override
+  State<AddStoryPage> createState() => _AddStoryPageState();
+}
+
+class _AddStoryPageState extends State<AddStoryPage> {
+  TextEditingController descriptionController = TextEditingController();
+
+  @override
+  void dispose() {
+    descriptionController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(),
+      body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView(
+            children: [
+              const SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: Column(
+                  children: [
+                    context.watch<AddImageProvider>().imagePath == null
+                        ? const Align(
+                            alignment: Alignment.center,
+                            child: Icon(
+                              Icons.image,
+                              size: 100,
+                            ),
+                          )
+                        : _showImage(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                            onPressed: () => _onCameraView(),
+                            child: const Text("Camera")),
+                        const SizedBox(
+                          width: 30,
+                        ),
+                        ElevatedButton(
+                            onPressed: () {
+                              _onGalleryView();
+                            },
+                            child: const Text("Galery")),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextField(
+                      controller: descriptionController,
+                      minLines: 6,
+                      maxLines:
+                          null, // Membuat TextField bisa mengisi lebih dari satu baris teks
+                      keyboardType: TextInputType
+                          .multiline, // Mengaktifkan keyboard dengan fitur multiline
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.only(
+                            bottom: 40.0, top: 8, right: 8, left: 8),
+                        isDense: true,
+                        hintText: 'Ketik Deskripsi Gambar..',
+
+                        filled: true,
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(12.47)),
+                        // Tambahkan properti dekorasi lain yang Anda butuhkan
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        _onUpload();
+
+                        context.read<ListStoryProvider>().fechtListstory();
+
+                        widget.onSend();
+                      },
+                      child: const Text("Tambah"),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          )),
+    );
+  }
+
+  _onGalleryView() async {
+    final provider = context.read<AddImageProvider>();
+    final isMacOS = defaultTargetPlatform == TargetPlatform.macOS;
+    final isLinux = defaultTargetPlatform == TargetPlatform.linux;
+    if (isMacOS || isLinux) return;
+    final ImagePicker picker = ImagePicker();
+
+    final XFile? pickedFile =
+        await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      provider.setImageFile(pickedFile);
+      provider.setImagePath(pickedFile.path);
+    }
+  }
+
+  _onCameraView() async {
+    final provider = context.read<AddImageProvider>();
+
+    final isAndroid = defaultTargetPlatform == TargetPlatform.android;
+    final isiOS = defaultTargetPlatform == TargetPlatform.iOS;
+    final isNotMobile = !(isAndroid || isiOS);
+    if (isNotMobile) return;
+
+    final ImagePicker picker = ImagePicker();
+
+    final pickedFile = await picker.pickImage(source: ImageSource.camera);
+
+    if (pickedFile != null) {
+      provider.setImageFile(pickedFile);
+      provider.setImagePath(pickedFile.path);
+    }
+  }
+
+  _onUpload() async {
+    final ScaffoldMessengerState scaffoldMessengerState =
+        ScaffoldMessenger.of(context);
+
+    final addImageProvider = context.read<AddImageProvider>();
+    final uploadProvider = context.read<UploadProvider>();
+
+    final imagePath = addImageProvider.imagePath;
+    final imageFile = addImageProvider.imageFile;
+    if (imagePath == null || imageFile == null) return;
+
+    final fileName = imageFile.name;
+    final bytes = await imageFile.readAsBytes();
+
+    final newBytes = await uploadProvider.compressImage(bytes);
+
+    await uploadProvider.upload(
+      newBytes,
+      fileName,
+      descriptionController.text,
+    );
+
+    if (uploadProvider.uploadResponse != null) {
+      addImageProvider.setImageFile(null);
+      addImageProvider.setImagePath(null);
+    }
+
+    scaffoldMessengerState.showSnackBar(
+      SnackBar(content: Text(uploadProvider.message)),
+    );
+  }
+
+  Widget _showImage() {
+    final imagePath = context.read<AddImageProvider>().imagePath;
+    return kIsWeb
+        ? Image.network(
+            imagePath.toString(),
+            fit: BoxFit.contain,
+          )
+        : Image.file(
+            File(imagePath.toString()),
+            fit: BoxFit.contain,
+          );
+  }
+}
