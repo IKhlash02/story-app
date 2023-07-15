@@ -1,7 +1,17 @@
- {
-        "loginButton":"Masuk",
-        "registerButton":"Buat Akun"
-        "validatorEmail":"Silakan masukkan alamat email Anda.",
-        "validatorName":"Silakan masukkan alamat nama Anda.",
-        "validatorPassword":"Silakan masukkan kata sandi Anda.",
-    }
+{
+  "@@locale": "id",
+  "loginButton": "Masuk",
+  "registerButton": "Buat Akun",
+  "validatorEmail": "Silakan masukkan alamat email Anda.",
+  "validatorName": "Silakan masukkan alamat nama Anda.",
+  "validatorPassword": "Silakan masukkan kata sandi Anda.",
+  "galeriItem": "Galeri",
+  "kameraItem": "Kamera",
+  "deskripsiItem": "Ketik Deskripsi Gambar..",
+  "addImage": "Tambah",
+  "validatorLogin": "Email atau kata sandi Anda tidak valid",
+  "nameHintText": "Nama",
+  "passwordHintText": "Kata sandi",
+  "validatorRegister": "email sudah ada yang punya",
+  "passwordLong": "Panjang kata sandi minimal harus 8 karakter"
+}

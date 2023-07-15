@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../common.dart';
 import '../provider/auth_provider.dart';
 
 /// todo 14: create LoginPage
@@ -50,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
                   controller: emailController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email.';
+                      return AppLocalizations.of(context)!.validatorEmail;
                     }
                     return null;
                   },
@@ -67,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your password.';
+                      return AppLocalizations.of(context)!.validatorPassword;
                     }
                     return null;
                   },
@@ -81,6 +82,8 @@ class _LoginPageState extends State<LoginPage> {
                             final scaffoldMessenger =
                                 ScaffoldMessenger.of(context);
 
+                            final localizations = AppLocalizations.of(context)!;
+
                             final authRead = context.read<AuthProvider>();
 
                             final result = await authRead.login(
@@ -89,20 +92,19 @@ class _LoginPageState extends State<LoginPage> {
                               widget.onLogin();
                             } else {
                               scaffoldMessenger.showSnackBar(
-                                const SnackBar(
-                                  content:
-                                      Text("Your email or password is invalid"),
+                                SnackBar(
+                                  content: Text(localizations.validatorLogin),
                                 ),
                               );
                             }
                           }
                         },
-                        child: const Text("LOGIN"),
+                        child: Text(AppLocalizations.of(context)!.loginButton),
                       ),
                 const SizedBox(height: 8),
                 OutlinedButton(
                   onPressed: () => widget.onRegister(),
-                  child: const Text("REGISTER"),
+                  child: Text(AppLocalizations.of(context)!.registerButton),
                 ),
               ],
             ),

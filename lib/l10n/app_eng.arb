@@ -1,7 +1,17 @@
-    {
-     "loginButton": "Login",
+{
+  "@@locale": "en",
+  "loginButton": "Login",
   "registerButton": "Register",
   "validatorEmail": "Please enter your email address.",
   "validatorName": "Please enter your name.",
-  "validatorPassword": "Please enter your password."
-    }
+  "validatorPassword": "Please enter your password.",
+  "galeriItem": "Gallery",
+  "kameraItem": "Camera",
+  "deskripsiItem": "Type Image Description..",
+  "addImage": "Add",
+  "validatorLogin": "Your email or password is invalid",
+  "nameHintText": "Name",
+  "passwordHintText": "Password",
+  "validatorRegister": "Email is already taken",
+  "passwordLong": "Password must be at least 8 characters long"
+}

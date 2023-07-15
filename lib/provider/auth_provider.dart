@@ -39,6 +39,8 @@ class AuthProvider extends ChangeNotifier {
 
       return isLoggedIn;
     } catch (e) {
+      isLoadingLogin = false;
+      notifyListeners();
       return false;
     }
   }
@@ -71,6 +73,8 @@ class AuthProvider extends ChangeNotifier {
       return userState;
     } catch (e) {
       isLoadingRegister = false;
+      notifyListeners();
+
       return false;
     }
   }

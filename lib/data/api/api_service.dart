@@ -49,7 +49,6 @@ class ApiService {
         "password": password,
       }),
     );
-
     final json = jsonDecode(response.body);
 
     if (response.statusCode == 201 && json["error"] == false) {

@@ -18,9 +18,11 @@ class ListStoryProvider extends ChangeNotifier {
   ListStoryProvider({
     required this.apiService,
     required this.authRepository,
-  });
+  }) {
+    _fechtListstory();
+  }
 
-  void fechtListstory() {
+  Future fechtListstory() async {
     _fechtListstory();
   }
 
@@ -41,7 +43,13 @@ class ListStoryProvider extends ChangeNotifier {
 
       User? user = await authRepository.getUser();
 
-      final token = user!.token;
+      if (user == null) {
+        _state = ResultState.noData;
+        notifyListeners();
+        return _message = "Empty Data";
+      }
+
+      final token = user.token;
 
       final story = await apiService.getAllStory(token);
       if (story.isEmpty) {
@@ -50,7 +58,9 @@ class ListStoryProvider extends ChangeNotifier {
         return _message = "Empty Data";
       } else {
         _state = ResultState.hasData;
+
         notifyListeners();
+
         return _liststory = story;
       }
     } catch (e) {

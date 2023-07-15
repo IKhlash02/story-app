@@ -2,9 +2,11 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
 
 import 'package:story_app_1/data/api/api_service.dart';
-import 'package:image/image.dart' as img;
+import 'package:story_app_1/provider/list_story_provider.dart';
+
 import '../data/model/upload_response.dart';
 import '../data/model/user_model.dart';
 import '../db/auth_repository.dart';
@@ -12,9 +14,11 @@ import '../db/auth_repository.dart';
 class UploadProvider extends ChangeNotifier {
   final ApiService apiService;
   final AuthRepository authRepository;
+  final ListStoryProvider listStoryProvider;
   UploadProvider({
     required this.apiService,
     required this.authRepository,
+    required this.listStoryProvider,
   });
 
   bool isUploading = false;
@@ -37,6 +41,7 @@ class UploadProvider extends ChangeNotifier {
           bytes, fileName, description, user!.token);
 
       message = uploadResponse?.message ?? "success";
+      await listStoryProvider.fechtListstory();
       isUploading = false;
       notifyListeners();
     } catch (e) {

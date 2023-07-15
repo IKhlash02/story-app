@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:story_app_1/common.dart';
 import 'package:story_app_1/provider/image_provider.dart';
 import 'package:story_app_1/provider/upload_provider.dart';
 
@@ -63,7 +64,8 @@ class _AddStoryPageState extends State<AddStoryPage> {
                       children: [
                         ElevatedButton(
                             onPressed: () => _onCameraView(),
-                            child: const Text("Camera")),
+                            child:
+                                Text(AppLocalizations.of(context)!.kameraItem)),
                         const SizedBox(
                           width: 30,
                         ),
@@ -71,7 +73,8 @@ class _AddStoryPageState extends State<AddStoryPage> {
                             onPressed: () {
                               _onGalleryView();
                             },
-                            child: const Text("Galery")),
+                            child:
+                                Text(AppLocalizations.of(context)!.galeriItem)),
                       ],
                     ),
                     const SizedBox(
@@ -88,7 +91,7 @@ class _AddStoryPageState extends State<AddStoryPage> {
                         contentPadding: const EdgeInsets.only(
                             bottom: 40.0, top: 8, right: 8, left: 8),
                         isDense: true,
-                        hintText: 'Ketik Deskripsi Gambar..',
+                        hintText: AppLocalizations.of(context)!.deskripsiItem,
 
                         filled: true,
                         border: OutlineInputBorder(
@@ -100,16 +103,16 @@ class _AddStoryPageState extends State<AddStoryPage> {
                     const SizedBox(
                       height: 25,
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        _onUpload();
+                    context.watch<UploadProvider>().isUploading
+                        ? const CircularProgressIndicator()
+                        : ElevatedButton(
+                            onPressed: () async {
+                              await _onUpload();
 
-                        context.read<ListStoryProvider>().fechtListstory();
-
-                        widget.onSend();
-                      },
-                      child: const Text("Tambah"),
-                    )
+                              widget.onSend();
+                            },
+                            child: Text(AppLocalizations.of(context)!.addImage),
+                          )
                   ],
                 ),
               ),

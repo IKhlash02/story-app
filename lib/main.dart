@@ -7,6 +7,7 @@ import 'package:story_app_1/provider/list_story_provider.dart';
 import 'package:story_app_1/provider/upload_provider.dart';
 import 'package:story_app_1/routes/router_delegate.dart';
 
+import 'common.dart';
 import 'db/auth_repository.dart';
 
 void main() {
@@ -35,7 +36,9 @@ class _MyAppState extends State<MyApp> {
     listSoryProvider = ListStoryProvider(
         apiService: ApiService(), authRepository: authRepository);
     uploadProvider = UploadProvider(
-        apiService: ApiService(), authRepository: authRepository);
+        apiService: ApiService(),
+        authRepository: authRepository,
+        listStoryProvider: listSoryProvider);
     myRouterDelegate = MyRouterDelegate(authRepository);
   }
 
@@ -62,6 +65,8 @@ class _MyAppState extends State<MyApp> {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           home: Router(
             routerDelegate: myRouterDelegate,
             backButtonDispatcher: RootBackButtonDispatcher(),

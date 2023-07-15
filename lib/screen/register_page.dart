@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../common.dart';
 import '../provider/auth_provider.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -37,7 +38,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("Register Screen"),
+        title: Text(AppLocalizations.of(context)!.registerButton),
       ),
       body: Center(
         child: ConstrainedBox(
@@ -53,7 +54,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: nameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your name.';
+                      return AppLocalizations.of(context)!.validatorName;
                     }
                     return null;
                   },
@@ -67,7 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   controller: emailController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your email.';
+                      return AppLocalizations.of(context)!.validatorEmail;
                     }
                     return null;
                   },
@@ -84,7 +85,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter your password.';
+                      return AppLocalizations.of(context)!.validatorPassword;
+                    } else if (value.length < 8) {
+                      return AppLocalizations.of(context)!.passwordLong;
                     }
                     return null;
                   },
@@ -94,6 +97,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     ? const Center(child: CircularProgressIndicator())
                     : ElevatedButton(
                         onPressed: () async {
+                          final ScaffoldMessengerState scaffoldMessengerState =
+                              ScaffoldMessenger.of(context);
+                          final localizations = AppLocalizations.of(context)!;
                           if (formKey.currentState!.validate()) {
                             final authRead = context.read<AuthProvider>();
 
@@ -101,15 +107,22 @@ class _RegisterPageState extends State<RegisterPage> {
                                 nameController.text,
                                 emailController.text,
                                 passwordController.text);
-                            if (result) widget.onRegister();
+                            if (result) {
+                              widget.onRegister();
+                            } else {
+                              scaffoldMessengerState.showSnackBar(SnackBar(
+                                  content:
+                                      Text(localizations.validatorRegister)));
+                            }
                           }
                         },
-                        child: const Text("REGISTER"),
+                        child:
+                            Text(AppLocalizations.of(context)!.registerButton),
                       ),
                 const SizedBox(height: 8),
                 OutlinedButton(
                   onPressed: () => widget.onLogin(),
-                  child: const Text("LOGIN"),
+                  child: Text(AppLocalizations.of(context)!.loginButton),
                 ),
               ],
             ),
