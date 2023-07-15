@@ -9,8 +9,6 @@ import 'package:story_app_1/common.dart';
 import 'package:story_app_1/provider/image_provider.dart';
 import 'package:story_app_1/provider/upload_provider.dart';
 
-import '../provider/list_story_provider.dart';
-
 class AddStoryPage extends StatefulWidget {
   final Function() onSend;
   const AddStoryPage({
@@ -106,10 +104,8 @@ class _AddStoryPageState extends State<AddStoryPage> {
                     context.watch<UploadProvider>().isUploading
                         ? const CircularProgressIndicator()
                         : ElevatedButton(
-                            onPressed: () async {
-                              await _onUpload();
-
-                              widget.onSend();
+                            onPressed: () {
+                              _onUpload();
                             },
                             child: Text(AppLocalizations.of(context)!.addImage),
                           )
@@ -164,7 +160,13 @@ class _AddStoryPageState extends State<AddStoryPage> {
 
     final imagePath = addImageProvider.imagePath;
     final imageFile = addImageProvider.imageFile;
-    if (imagePath == null || imageFile == null) return;
+    if (imagePath == null || imageFile == null) {
+      scaffoldMessengerState.showSnackBar(
+        SnackBar(
+            content: Text(AppLocalizations.of(context)!.validatoraddImage)),
+      );
+      return;
+    }
 
     final fileName = imageFile.name;
     final bytes = await imageFile.readAsBytes();
@@ -185,6 +187,7 @@ class _AddStoryPageState extends State<AddStoryPage> {
     scaffoldMessengerState.showSnackBar(
       SnackBar(content: Text(uploadProvider.message)),
     );
+    widget.onSend();
   }
 
   Widget _showImage() {

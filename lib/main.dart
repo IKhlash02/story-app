@@ -4,6 +4,7 @@ import 'package:story_app_1/data/api/api_service.dart';
 import 'package:story_app_1/provider/auth_provider.dart';
 import 'package:story_app_1/provider/image_provider.dart';
 import 'package:story_app_1/provider/list_story_provider.dart';
+import 'package:story_app_1/provider/localization_provider.dart';
 import 'package:story_app_1/provider/upload_provider.dart';
 import 'package:story_app_1/routes/router_delegate.dart';
 
@@ -58,19 +59,26 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (context) => uploadProvider,
         ),
+        ChangeNotifierProvider(
+          create: (context) => LocalizationProvider(),
+        ),
       ],
-      child: MaterialApp(
-          title: 'Flutter Demo',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-          ),
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          home: Router(
-            routerDelegate: myRouterDelegate,
-            backButtonDispatcher: RootBackButtonDispatcher(),
-          )),
+      child: Builder(builder: (context) {
+        final provider = Provider.of<LocalizationProvider>(context);
+        return MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: true,
+            ),
+            locale: provider.locale,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: Router(
+              routerDelegate: myRouterDelegate,
+              backButtonDispatcher: RootBackButtonDispatcher(),
+            ));
+      }),
     );
   }
 }

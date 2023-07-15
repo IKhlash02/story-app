@@ -13,5 +13,6 @@
   "nameHintText": "Name",
   "passwordHintText": "Password",
   "validatorRegister": "Email is already taken",
-  "passwordLong": "Password must be at least 8 characters long"
+  "passwordLong": "Password must be at least 8 characters long",
+  "validatoraddImage": "You haven't added a picture yet"
 }

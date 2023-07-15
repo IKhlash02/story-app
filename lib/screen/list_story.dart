@@ -8,6 +8,7 @@ import 'package:story_app_1/result_state.dart';
 import 'package:story_app_1/widget/card_list_story.dart';
 
 import '../provider/auth_provider.dart';
+import '../widget/flag_icon_widget.dart';
 
 class ListStory extends StatefulWidget {
   final Function() onLogout;
@@ -43,6 +44,7 @@ class _ListStoryState extends State<ListStory> {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          const FlagIconWidget(),
           IconButton(
               onPressed: () async {
                 final authRead = context.read<AuthProvider>();

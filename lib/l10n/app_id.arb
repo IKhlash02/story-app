@@ -13,5 +13,6 @@
   "nameHintText": "Nama",
   "passwordHintText": "Kata sandi",
   "validatorRegister": "email sudah ada yang punya",
-  "passwordLong": "Panjang kata sandi minimal harus 8 karakter"
+  "passwordLong": "Panjang kata sandi minimal harus 8 karakter",
+  "validatoraddImage": "kamu belum menambahkan gambar"
 }
