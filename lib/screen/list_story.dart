@@ -27,15 +27,33 @@ class ListStory extends StatefulWidget {
 }
 
 class _ListStoryState extends State<ListStory> {
+  final ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
 
+    final provider = context.read<ListStoryProvider>();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent) {
+        if (provider.pageItems != null) {
+          provider.fechtListstory();
+        }
+      }
+    });
+
     if (context.read<AuthProvider>().isLoggedIn == true) {
       Future.microtask(() {
-        context.read<ListStoryProvider>().fechtListstory();
+        provider.fechtListstory();
       });
     }
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -70,7 +88,18 @@ class _ListStoryState extends State<ListStory> {
               } else if (value.state == ResultState.hasData) {
                 final storyData = value.result;
                 return ListView.builder(
+                  controller: scrollController,
+                  itemCount:
+                      storyData.length + (value.pageItems != null ? 1 : 0),
                   itemBuilder: (context, index) {
+                    if (index == storyData.length && value.pageItems != null) {
+                      return const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(8),
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
                     return GestureDetector(
                       onTap: () => widget.onTapped(storyData[index]),
                       child: CardListStory(
@@ -78,7 +107,6 @@ class _ListStoryState extends State<ListStory> {
                       ),
                     );
                   },
-                  itemCount: storyData.length,
                 );
               } else if (value.state == ResultState.noData) {
                 return Center(

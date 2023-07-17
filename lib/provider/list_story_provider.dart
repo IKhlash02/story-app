@@ -22,6 +22,9 @@ class ListStoryProvider extends ChangeNotifier {
     _fechtListstory();
   }
 
+  int? pageItems = 1;
+  int sizeItems = 10;
+
   Future fechtListstory() async {
     _fechtListstory();
   }
@@ -38,8 +41,10 @@ class ListStoryProvider extends ChangeNotifier {
 
   Future<dynamic> _fechtListstory() async {
     try {
-      _state = ResultState.loading;
-      notifyListeners();
+      if (pageItems == 1) {
+        _state = ResultState.loading;
+        notifyListeners();
+      }
 
       User? user = await authRepository.getUser();
 
@@ -51,17 +56,23 @@ class ListStoryProvider extends ChangeNotifier {
 
       final token = user.token;
 
-      final story = await apiService.getAllStory(token);
+      final story = await apiService.getAllStory(token, pageItems!, sizeItems);
       if (story.isEmpty) {
         _state = ResultState.noData;
         notifyListeners();
         return _message = "Empty Data";
       } else {
         _state = ResultState.hasData;
+        _liststory = story;
+        if (_liststory.length < sizeItems) {
+          pageItems = null;
+        } else {
+          pageItems = pageItems! + 1;
+        }
 
         notifyListeners();
 
-        return _liststory = story;
+        return _liststory;
       }
     } catch (e) {
       String errorMessage = "An error occurred";

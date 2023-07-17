@@ -13,7 +13,6 @@ class ApiService {
   static const _login = "/login";
   static const _register = "/register";
   static const _story = "/stories";
-  // static const _addNewsStoryGuestAccount = "/stories/guest";
 
   Future<User> userLogin(String email, String password) async {
     final response = await http.post(
@@ -99,9 +98,10 @@ class ApiService {
     }
   }
 
-  Future<List<StoryElement>> getAllStory(String token) async {
+  Future<List<StoryElement>> getAllStory(String token,
+      [int page = 1, int size = 10]) async {
     final response = await http.get(
-      Uri.parse(_baseUrl + _story),
+      Uri.parse("$_baseUrl$_story?page=$page&size=$size"),
       headers: {
         "Content-Type": "application/json",
         'Authorization': 'Bearer $token'
