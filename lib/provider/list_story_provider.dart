@@ -25,6 +25,10 @@ class ListStoryProvider extends ChangeNotifier {
   int? pageItems = 1;
   int sizeItems = 10;
 
+  void setPageItems() {
+    pageItems = 1;
+  }
+
   Future fechtListstory() async {
     _fechtListstory();
   }

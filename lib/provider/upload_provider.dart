@@ -41,7 +41,9 @@ class UploadProvider extends ChangeNotifier {
           bytes, fileName, description, user!.token);
 
       message = uploadResponse?.message ?? "success";
+      listStoryProvider.setPageItems();
       await listStoryProvider.fechtListstory();
+
       isUploading = false;
       notifyListeners();
     } catch (e) {
