@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:story_app_1/data/api/api_service.dart';
 
@@ -30,7 +32,7 @@ class AuthRepository {
   Future<bool> saveToken(User user) async {
     final preferences = await SharedPreferences.getInstance();
     await Future.delayed(const Duration(seconds: 2));
-    return preferences.setString(userKey, user.toRawJson());
+    return preferences.setString(userKey, jsonEncode(user.toJson()));
   }
 
   Future<bool> deleteUser() async {
@@ -45,7 +47,8 @@ class AuthRepository {
     final json = preferences.getString(userKey) ?? "";
     User? user;
     try {
-      user = User.fromRawJson(json);
+      final response = jsonDecode(json);
+      user = User.fromJson(response);
     } catch (e) {
       user = null;
     }

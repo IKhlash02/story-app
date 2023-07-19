@@ -1,5 +1,8 @@
-import 'dart:convert';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'story_element.g.dart';
+
+@JsonSerializable()
 class StoryElement {
   final String id;
   final String name;
@@ -19,28 +22,8 @@ class StoryElement {
     this.lon,
   });
 
-  factory StoryElement.fromRawJson(String str) =>
-      StoryElement.fromJson(json.decode(str));
+  factory StoryElement.fromJson(Map<String, dynamic> json) =>
+      _$StoryElementFromJson(json);
 
-  String toRawJson() => json.encode(toJson());
-
-  factory StoryElement.fromJson(Map<String, dynamic> json) => StoryElement(
-        id: json["id"],
-        name: json["name"],
-        description: json["description"],
-        photoUrl: json["photoUrl"],
-        createdAt: DateTime.parse(json["createdAt"]),
-        lat: json["lat"]?.toDouble(),
-        lon: json["lon"]?.toDouble(),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "name": name,
-        "description": description,
-        "photoUrl": photoUrl,
-        "createdAt": createdAt.toIso8601String(),
-        "lat": lat,
-        "lon": lon,
-      };
+  Map<String, dynamic> toJson() => _$StoryElementToJson(this);
 }

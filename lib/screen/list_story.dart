@@ -31,7 +31,6 @@ class _ListStoryState extends State<ListStory> {
 
   @override
   void initState() {
-    print("sedang di buat baru");
     super.initState();
 
     final provider = context.read<ListStoryProvider>();
@@ -53,7 +52,6 @@ class _ListStoryState extends State<ListStory> {
 
   @override
   void dispose() {
-    print("sedang di dispose");
     scrollController.dispose();
     super.dispose();
   }

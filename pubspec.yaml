@@ -31,17 +31,21 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   http: ^1.1.0
   image: ^4.0.17
   image_picker: ^1.0.1
   image_picker_windows: ^0.2.1
+  intl: null
+  json_annotation: ^4.8.1
+
   provider: ^6.0.5
   shared_preferences: ^2.2.0
-  flutter_localizations:
-    sdk: flutter
-  intl:
 
 dev_dependencies:
+  build_runner: ^2.4.6
+  json_serializable: ^6.7.1
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
