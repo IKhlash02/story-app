@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../common.dart';
 import '../provider/auth_provider.dart';
 
-/// todo 14: create LoginPage
 class LoginPage extends StatefulWidget {
   final Function() onLogin;
   final Function() onRegister;
