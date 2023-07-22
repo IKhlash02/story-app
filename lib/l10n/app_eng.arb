@@ -14,5 +14,9 @@
   "passwordHintText": "Password",
   "validatorRegister": "Email is already taken",
   "passwordLong": "Password must be at least 8 characters long",
-  "validatoraddImage": "You haven't added a picture yet"
+  "validatoraddImage": "You haven't added a picture yet",
+  "setLocation": "Set location",
+  "lanjut": "Continue",
+  "tambahAlamat": "Add address",
+  "addStoryValidator": "Address has not been added"
 }

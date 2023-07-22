@@ -112,7 +112,7 @@ class _AddStoryPageState extends State<AddStoryPage> {
                       },
                       child: Text(
                           (context.read<AddMapProvider>().alamatStory == null)
-                              ? "Tambah Alamat"
+                              ? AppLocalizations.of(context)!.tambahAlamat
                               : context.read<AddMapProvider>().street),
                     ),
                     const SizedBox(
@@ -127,9 +127,10 @@ class _AddStoryPageState extends State<AddStoryPage> {
                                 _onUpload();
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content:
-                                            Text("Alamat belum ditambahkan")));
+                                    SnackBar(
+                                        content: Text(
+                                            AppLocalizations.of(context)!
+                                                .addStoryValidator)));
                               }
                             },
                             child: Text(AppLocalizations.of(context)!.addImage),

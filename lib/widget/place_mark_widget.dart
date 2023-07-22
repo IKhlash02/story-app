@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart' as geo;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:story_app_1/common.dart';
 
 import 'package:story_app_1/provider/add_map.dart';
 
@@ -36,8 +37,8 @@ class PlacemarkWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Set lokasi",
+          Text(
+            AppLocalizations.of(context)!.setLocation,
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
           ),
           const SizedBox(
@@ -90,7 +91,7 @@ class PlacemarkWidget extends StatelessWidget {
 
                     onPickMap();
                   },
-                  child: const Text("Lanjut")),
+                  child: Text(AppLocalizations.of(context)!.lanjut)),
             ],
           )
         ],

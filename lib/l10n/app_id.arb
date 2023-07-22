@@ -14,5 +14,9 @@
   "passwordHintText": "Kata sandi",
   "validatorRegister": "email sudah ada yang punya",
   "passwordLong": "Panjang kata sandi minimal harus 8 karakter",
-  "validatoraddImage": "kamu belum menambahkan gambar"
+  "validatoraddImage": "kamu belum menambahkan gambar",
+  "setLocation": "Atur Lokasi",
+  "lanjut": "Lanjut",
+  "tambahAlamat": "Tambah Alamat",
+  "addStoryValidator": "Alamat belum ditambahkan"
 }
