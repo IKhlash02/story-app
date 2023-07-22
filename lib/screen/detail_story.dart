@@ -1,12 +1,14 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:story_app_1/data/model/story_element.dart';
 
 class DetailStory extends StatelessWidget {
   final StoryElement storyElement;
+  final Function() isMap;
   const DetailStory({
     Key? key,
     required this.storyElement,
+    required this.isMap,
   }) : super(key: key);
 
   @override
@@ -60,6 +62,14 @@ class DetailStory extends StatelessWidget {
               ],
             ),
           ),
+          if (storyElement.lat != null)
+            Center(
+              child: ElevatedButton(
+                  onPressed: () {
+                    isMap();
+                  },
+                  child: const Text("Lokasi")),
+            )
         ],
       )),
     );

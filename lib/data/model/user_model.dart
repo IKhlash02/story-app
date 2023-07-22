@@ -1,20 +1,15 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'user_model.g.dart';
+part 'user_model.freezed.dart';
 
-@JsonSerializable()
-class User {
-  final String userId;
-  final String name;
-  final String token;
-
-  User({
-    required this.userId,
-    required this.name,
-    required this.token,
-  });
+@freezed
+class User with _$User {
+  const factory User({
+    required String userId,
+    required String name,
+    required String token,
+  }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
-
-  Map<String, dynamic> toJson() => _$UserToJson(this);
 }

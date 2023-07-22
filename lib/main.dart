@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:story_app_1/data/api/api_service.dart';
+import 'package:story_app_1/provider/add_map.dart';
 import 'package:story_app_1/provider/auth_provider.dart';
 import 'package:story_app_1/provider/image_provider.dart';
 import 'package:story_app_1/provider/list_story_provider.dart';
@@ -27,6 +28,7 @@ class _MyAppState extends State<MyApp> {
   late AuthProvider authProvider;
   late ListStoryProvider listSoryProvider;
   late UploadProvider uploadProvider;
+  late AddMapProvider addMapProvider;
 
   @override
   void initState() {
@@ -36,10 +38,12 @@ class _MyAppState extends State<MyApp> {
     authProvider = AuthProvider(authRepository, ApiService());
     listSoryProvider = ListStoryProvider(
         apiService: ApiService(), authRepository: authRepository);
+    addMapProvider = AddMapProvider();
     uploadProvider = UploadProvider(
         apiService: ApiService(),
         authRepository: authRepository,
-        listStoryProvider: listSoryProvider);
+        listStoryProvider: listSoryProvider,
+        mapProvider: addMapProvider);
     myRouterDelegate = MyRouterDelegate(authRepository);
   }
 
@@ -61,6 +65,9 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider(
           create: (context) => LocalizationProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => addMapProvider,
         ),
       ],
       child: Builder(builder: (context) {

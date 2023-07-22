@@ -1,19 +1,15 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'upload_response.g.dart';
+part 'upload_response.freezed.dart';
 
-@JsonSerializable()
-class UploadResponse {
-  final bool error;
-  final String message;
-
-  UploadResponse({
-    required this.error,
-    required this.message,
-  });
+@freezed
+class UploadResponse with _$UploadResponse {
+  const factory UploadResponse({
+    required bool error,
+    required String message,
+  }) = _UploadResponse;
 
   factory UploadResponse.fromJson(Map<String, dynamic> json) =>
       _$UploadResponseFromJson(json);
-
-  Map<String, dynamic> toJson() => _$UploadResponseToJson(this);
 }

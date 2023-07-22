@@ -23,7 +23,7 @@ class ListStoryProvider extends ChangeNotifier {
   }
 
   int? pageItems = 1;
-  int sizeItems = 10;
+  int sizeItems = 5;
 
   void setPageItems() {
     pageItems = 1;
@@ -34,7 +34,7 @@ class ListStoryProvider extends ChangeNotifier {
   }
 
   String _message = "";
-  late List<StoryElement> _liststory;
+  List<StoryElement> _liststory = [];
   late ResultState _state;
 
   String get message => _message;
@@ -61,23 +61,24 @@ class ListStoryProvider extends ChangeNotifier {
       final token = user.token;
 
       final story = await apiService.getAllStory(token, pageItems!, sizeItems);
-      if (story.isEmpty) {
+
+      _state = ResultState.hasData;
+      _liststory.addAll(story);
+      if (_liststory.length < sizeItems) {
+        pageItems = null;
+      } else {
+        pageItems = pageItems! + 1;
+      }
+
+      notifyListeners();
+
+      if (_liststory.isEmpty) {
         _state = ResultState.noData;
         notifyListeners();
         return _message = "Empty Data";
-      } else {
-        _state = ResultState.hasData;
-        _liststory = story;
-        if (_liststory.length < sizeItems) {
-          pageItems = null;
-        } else {
-          pageItems = pageItems! + 1;
-        }
-
-        notifyListeners();
-
-        return _liststory;
       }
+
+      return _liststory;
     } catch (e) {
       String errorMessage = "An error occurred";
 

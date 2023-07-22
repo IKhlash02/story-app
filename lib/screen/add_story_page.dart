@@ -1,18 +1,24 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// i
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+
 import 'package:story_app_1/common.dart';
 import 'package:story_app_1/provider/image_provider.dart';
 import 'package:story_app_1/provider/upload_provider.dart';
 
+import '../provider/add_map.dart';
+
 class AddStoryPage extends StatefulWidget {
+  final Function() addMap;
   final Function() onSend;
   const AddStoryPage({
     Key? key,
+    required this.addMap,
     required this.onSend,
   }) : super(key: key);
 
@@ -101,11 +107,31 @@ class _AddStoryPageState extends State<AddStoryPage> {
                     const SizedBox(
                       height: 25,
                     ),
+                    ElevatedButton(
+                      onPressed: () {
+                        widget.addMap();
+                      },
+                      child: Text(
+                          (context.read<AddMapProvider>().alamatStory == null)
+                              ? "Tambah Alamat"
+                              : context.read<AddMapProvider>().street),
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
                     context.watch<UploadProvider>().isUploading
                         ? const CircularProgressIndicator()
                         : ElevatedButton(
                             onPressed: () {
-                              _onUpload();
+                              if (context.read<AddMapProvider>().alamatStory !=
+                                  null) {
+                                _onUpload();
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content:
+                                            Text("Alamat belum ditambahkan")));
+                              }
                             },
                             child: Text(AppLocalizations.of(context)!.addImage),
                           )

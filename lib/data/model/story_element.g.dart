@@ -6,7 +6,8 @@ part of 'story_element.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-StoryElement _$StoryElementFromJson(Map<String, dynamic> json) => StoryElement(
+_$_StoryElement _$$_StoryElementFromJson(Map<String, dynamic> json) =>
+    _$_StoryElement(
       id: json['id'] as String,
       name: json['name'] as String,
       description: json['description'] as String,
@@ -16,7 +17,7 @@ StoryElement _$StoryElementFromJson(Map<String, dynamic> json) => StoryElement(
       lon: (json['lon'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$StoryElementToJson(StoryElement instance) =>
+Map<String, dynamic> _$$_StoryElementToJson(_$_StoryElement instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,

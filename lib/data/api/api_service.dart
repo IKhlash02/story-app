@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'dart:typed_data';
 
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:story_app_1/data/model/story_element.dart';
 
 import '../model/upload_response.dart';
@@ -57,12 +58,8 @@ class ApiService {
     }
   }
 
-  Future<UploadResponse> addNewStory(
-    List<int> bytes,
-    String fileName,
-    String description,
-    String token,
-  ) async {
+  Future<UploadResponse> addNewStory(List<int> bytes, String fileName,
+      String description, String token, LatLng latLng) async {
     final headers = {
       'Content-Type': 'multipart/form-data',
       'Authorization': 'Bearer $token'
@@ -76,6 +73,8 @@ class ApiService {
     );
     final Map<String, String> fields = {
       "description": description,
+      "lat": latLng.latitude.toString(),
+      "lon": latLng.longitude.toString(),
     };
 
     request.files.add(multiPartFile);
@@ -89,8 +88,9 @@ class ApiService {
     final String responseData = String.fromCharCodes(responseList);
 
     if (statusCode == 201) {
+      final responsejson = jsonDecode(responseData);
       final UploadResponse uploadResponse = UploadResponse.fromJson(
-        responseData,
+        responsejson,
       );
       return uploadResponse;
     } else {
@@ -99,9 +99,9 @@ class ApiService {
   }
 
   Future<List<StoryElement>> getAllStory(String token,
-      [int page = 1, int size = 10]) async {
+      [int page = 1, int size = 5]) async {
     final response = await http.get(
-      Uri.parse("$_baseUrl$_story?page=$page&size=$size"),
+      Uri.parse("$_baseUrl$_story?page=$page&size=$size&location=1"),
       headers: {
         "Content-Type": "application/json",
         'Authorization': 'Bearer $token'

@@ -7,6 +7,8 @@ import 'package:story_app_1/screen/add_story_page.dart';
 import 'package:story_app_1/screen/detail_story.dart';
 import 'package:story_app_1/screen/list_story.dart';
 import 'package:story_app_1/screen/login_page.dart';
+import 'package:story_app_1/screen/map_page.dart';
+import 'package:story_app_1/screen/pick_maps_page.dart';
 import 'package:story_app_1/screen/register_page.dart';
 import 'package:story_app_1/screen/splash_screen.dart';
 
@@ -33,6 +35,8 @@ class MyRouterDelegate extends RouterDelegate
   bool? isLoggedIn;
   bool? isRegister = false;
   bool? isAddStory = false;
+  bool? isMapStory = false;
+  bool? isAddMap = false;
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +56,17 @@ class MyRouterDelegate extends RouterDelegate
         if (!didPop) {
           return false;
         }
-        storyElement = null;
-        isAddStory = false;
+        if (isMapStory == false) {
+          storyElement = null;
+        }
+
+        if (isAddMap == false) {
+          isAddStory = false;
+        }
+
+        isAddMap = false;
         isRegister = false;
+        isMapStory = false;
         notifyListeners();
 
         return true;
@@ -130,17 +142,42 @@ class MyRouterDelegate extends RouterDelegate
             key: const ValueKey("DetailStory"),
             child: DetailStory(
               storyElement: storyElement!,
+              isMap: () {
+                isMapStory = true;
+                notifyListeners();
+              },
+            ),
+          ),
+        if (isMapStory == true && storyElement != null)
+          MaterialPage(
+            key: const ValueKey("MapsPage"),
+            child: MapsPage(
+              storyElement: storyElement!,
             ),
           ),
         if (isAddStory == true)
           MaterialPage(
             key: const ValueKey("AddStoryPage"),
             child: AddStoryPage(
+              addMap: () {
+                isAddMap = true;
+                notifyListeners();
+              },
               onSend: () {
                 isAddStory = false;
                 notifyListeners();
               },
             ),
-          )
+          ),
+        if (isAddMap == true)
+          MaterialPage(
+            key: const ValueKey("AddMapStory"),
+            child: PickerPage(
+              onPickMap: () {
+                isAddMap = false;
+                notifyListeners();
+              },
+            ),
+          ),
       ];
 }

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
 
 import 'package:story_app_1/data/api/api_service.dart';
+import 'package:story_app_1/provider/add_map.dart';
+
 import 'package:story_app_1/provider/list_story_provider.dart';
 
 import '../data/model/upload_response.dart';
@@ -15,10 +17,12 @@ class UploadProvider extends ChangeNotifier {
   final ApiService apiService;
   final AuthRepository authRepository;
   final ListStoryProvider listStoryProvider;
+  final AddMapProvider mapProvider;
   UploadProvider({
     required this.apiService,
     required this.authRepository,
     required this.listStoryProvider,
+    required this.mapProvider,
   });
 
   bool isUploading = false;
@@ -38,7 +42,7 @@ class UploadProvider extends ChangeNotifier {
 
       User? user = await authRepository.getUser();
       uploadResponse = await apiService.addNewStory(
-          bytes, fileName, description, user!.token);
+          bytes, fileName, description, user!.token, mapProvider.alamatStory!);
 
       message = uploadResponse?.message ?? "success";
       listStoryProvider.setPageItems();
