@@ -45,7 +45,7 @@ class UploadProvider extends ChangeNotifier {
 
       message = uploadResponse?.message ?? "success";
       listStoryProvider.setPageItems();
-      await listStoryProvider.fechtListstory();
+      await listStoryProvider.addListstory();
 
       isUploading = false;
       notifyListeners();

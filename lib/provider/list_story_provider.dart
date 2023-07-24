@@ -28,6 +28,10 @@ class ListStoryProvider extends ChangeNotifier {
     pageItems = 1;
   }
 
+  Future addListstory() async {
+    _addListstory();
+  }
+
   Future fechtListstory() async {
     _fechtListstory();
   }
@@ -63,11 +67,59 @@ class ListStoryProvider extends ChangeNotifier {
 
       _state = ResultState.hasData;
       _liststory.addAll(story);
-      if (_liststory.length < sizeItems) {
+      if (story.length < sizeItems) {
         pageItems = null;
       } else {
         pageItems = pageItems! + 1;
       }
+
+      notifyListeners();
+
+      if (_liststory.isEmpty) {
+        _state = ResultState.noData;
+        notifyListeners();
+        return _message = "Empty Data";
+      }
+
+      return _liststory;
+    } catch (e) {
+      String errorMessage = "An error occurred";
+
+      // Menyesuaikan pesan error berdasarkan jenis kesalahan yang terjadi
+      if (e is SocketException) {
+        errorMessage = "No internet connection";
+      } else if (e is TimeoutException) {
+        errorMessage = "Request timed out";
+      } else if (e is FormatException) {
+        errorMessage = "Invalid data format";
+      }
+
+      _state = ResultState.error;
+      notifyListeners();
+      return _message = errorMessage;
+    }
+  }
+
+  Future<dynamic> _addListstory() async {
+    try {
+      pageItems = 1;
+      _state = ResultState.loading;
+      notifyListeners();
+
+      User? user = await authRepository.getUser();
+
+      if (user == null) {
+        _state = ResultState.noData;
+        notifyListeners();
+        return _message = "Empty Data";
+      }
+
+      final token = user.token;
+
+      final story = await apiService.getAllStory(token, pageItems!, sizeItems);
+
+      _state = ResultState.hasData;
+      _liststory = story;
 
       notifyListeners();
 
