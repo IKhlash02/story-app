@@ -41,7 +41,7 @@ class UploadProvider extends ChangeNotifier {
 
       User? user = await authRepository.getUser();
       uploadResponse = await apiService.addNewStory(
-          bytes, fileName, description, user!.token, mapProvider.alamatStory!);
+          bytes, fileName, description, user!.token, mapProvider.alamatStory);
 
       message = uploadResponse?.message ?? "success";
       listStoryProvider.setPageItems();

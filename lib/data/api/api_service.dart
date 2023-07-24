@@ -59,7 +59,7 @@ class ApiService {
   }
 
   Future<UploadResponse> addNewStory(List<int> bytes, String fileName,
-      String description, String token, LatLng latLng) async {
+      String description, String token, LatLng? latLng) async {
     final headers = {
       'Content-Type': 'multipart/form-data',
       'Authorization': 'Bearer $token'
@@ -73,9 +73,12 @@ class ApiService {
     );
     final Map<String, String> fields = {
       "description": description,
-      "lat": latLng.latitude.toString(),
-      "lon": latLng.longitude.toString(),
     };
+
+    if (latLng != null) {
+      fields["lat"] = latLng.latitude.toString();
+      fields["lon"] = latLng.longitude.toString();
+    }
 
     request.files.add(multiPartFile);
     request.fields.addAll(fields);

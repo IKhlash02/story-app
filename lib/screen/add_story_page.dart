@@ -122,16 +122,7 @@ class _AddStoryPageState extends State<AddStoryPage> {
                         ? const CircularProgressIndicator()
                         : ElevatedButton(
                             onPressed: () {
-                              if (context.read<AddMapProvider>().alamatStory !=
-                                  null) {
-                                _onUpload();
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text(
-                                            AppLocalizations.of(context)!
-                                                .addStoryValidator)));
-                              }
+                              _onUpload();
                             },
                             child: Text(AppLocalizations.of(context)!.addImage),
                           )
