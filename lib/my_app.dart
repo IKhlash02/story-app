@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:story_app_1/data/api/api_service.dart';
+import 'package:story_app_1/flavor_config.dart';
 import 'package:story_app_1/provider/add_map.dart';
 import 'package:story_app_1/provider/auth_provider.dart';
 import 'package:story_app_1/provider/image_provider.dart';
@@ -11,10 +12,6 @@ import 'package:story_app_1/routes/router_delegate.dart';
 
 import 'common.dart';
 import 'db/auth_repository.dart';
-
-void main() {
-  runApp(const MyApp());
-}
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -73,9 +70,10 @@ class _MyAppState extends State<MyApp> {
       child: Builder(builder: (context) {
         final provider = Provider.of<LocalizationProvider>(context);
         return MaterialApp(
-            title: 'Flutter Demo',
+            title: FlavorConfig.instance.values.titleApp,
             theme: ThemeData(
-              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              colorScheme:
+                  ColorScheme.fromSeed(seedColor: FlavorConfig.instance.color),
               useMaterial3: true,
             ),
             locale: provider.locale,

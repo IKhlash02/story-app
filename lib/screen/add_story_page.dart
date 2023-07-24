@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'package:story_app_1/common.dart';
+import 'package:story_app_1/flavor_config.dart';
 import 'package:story_app_1/provider/image_provider.dart';
 import 'package:story_app_1/provider/upload_provider.dart';
 
@@ -106,15 +107,16 @@ class _AddStoryPageState extends State<AddStoryPage> {
                     const SizedBox(
                       height: 25,
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        widget.addMap();
-                      },
-                      child: Text(
-                          (context.read<AddMapProvider>().alamatStory == null)
-                              ? AppLocalizations.of(context)!.tambahAlamat
-                              : context.read<AddMapProvider>().street),
-                    ),
+                    if (FlavorConfig.instance.values.isFree == false)
+                      ElevatedButton(
+                        onPressed: () {
+                          widget.addMap();
+                        },
+                        child: Text(
+                            (context.read<AddMapProvider>().alamatStory == null)
+                                ? AppLocalizations.of(context)!.tambahAlamat
+                                : context.read<AddMapProvider>().street),
+                      ),
                     const SizedBox(
                       height: 25,
                     ),
