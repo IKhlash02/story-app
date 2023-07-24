@@ -183,6 +183,7 @@ class _AddStoryPageState extends State<AddStoryPage> {
 
     final addImageProvider = context.read<AddImageProvider>();
     final uploadProvider = context.read<UploadProvider>();
+    final addMapprovider = context.read<AddMapProvider>();
 
     final imagePath = addImageProvider.imagePath;
     final imageFile = addImageProvider.imageFile;
@@ -209,6 +210,8 @@ class _AddStoryPageState extends State<AddStoryPage> {
       addImageProvider.setImageFile(null);
       addImageProvider.setImagePath(null);
     }
+
+    addMapprovider.setNull();
 
     scaffoldMessengerState.showSnackBar(
       SnackBar(content: Text(uploadProvider.message)),

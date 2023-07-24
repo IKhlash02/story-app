@@ -12,4 +12,9 @@ class AddMapProvider extends ChangeNotifier {
   void setStreet(String alamat) {
     street = alamat;
   }
+
+  void setNull() {
+    alamatStory = null;
+    street = "";
+  }
 }

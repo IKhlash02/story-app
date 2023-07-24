@@ -93,10 +93,10 @@ class PlacemarkWidget extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      context.read<AddMapProvider>().setAlamatStory(latLng);
-                      context
-                          .read<AddMapProvider>()
-                          .setStreet(placemark.street!);
+                      final provider = context.read<AddMapProvider>();
+
+                      provider.setAlamatStory(latLng);
+                      provider.setStreet(placemark.street!);
 
                       onPickMap();
                     },

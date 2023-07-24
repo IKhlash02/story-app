@@ -120,7 +120,7 @@ class ListStoryProvider extends ChangeNotifier {
 
       _state = ResultState.hasData;
       _liststory = story;
-
+      pageItems = pageItems! + 1;
       notifyListeners();
 
       if (_liststory.isEmpty) {
