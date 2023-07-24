@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-
+import 'package:geocoding/geocoding.dart' as geo;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:story_app_1/data/model/story_element.dart';
+
+import '../widget/place_mark_widget.dart';
 
 class MapsPage extends StatefulWidget {
   final StoryElement storyElement;
@@ -19,22 +21,29 @@ class _MapsPageState extends State<MapsPage> {
   MapType selectedMapType = MapType.normal;
   late GoogleMapController mapController;
   final Set<Marker> markers = {};
-
+  geo.Placemark? placemark;
   late LatLng storyLocation;
 
   @override
   void initState() {
     super.initState();
     storyLocation = LatLng(widget.storyElement.lat!, widget.storyElement.lon!);
+  }
+
+  void defineMarker(LatLng latLng, String street, String address) {
     final marker = Marker(
-        markerId: const MarkerId("storyApp"),
-        position: LatLng(widget.storyElement.lat!, widget.storyElement.lon!),
-        onTap: () {
-          mapController.animateCamera(
-            CameraUpdate.newLatLngZoom(storyLocation, 18),
-          );
-        });
-    markers.add(marker);
+      markerId: const MarkerId("source"),
+      position: latLng,
+      infoWindow: InfoWindow(
+        title: street,
+        snippet: address,
+      ),
+    );
+
+    setState(() {
+      markers.cast();
+      markers.add(marker);
+    });
   }
 
   @override
@@ -50,17 +59,27 @@ class _MapsPageState extends State<MapsPage> {
                 zoom: 18,
                 target: storyLocation,
               ),
-              onMapCreated: (controller) {
+              onMapCreated: (controller) async {
+                final info = await geo.placemarkFromCoordinates(
+                    storyLocation.latitude, storyLocation.longitude);
+
+                final place = info[0];
+                final street = place.street!;
+                final address =
+                    '${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
                 setState(() {
+                  placemark = place;
                   mapController = controller;
                 });
+
+                defineMarker(storyLocation, street, address);
               },
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false,
               mapToolbarEnabled: false,
             ),
             Positioned(
-              bottom: 16,
+              bottom: 150,
               right: 16,
               child: Column(
                 children: [
@@ -120,6 +139,20 @@ class _MapsPageState extends State<MapsPage> {
                 ),
               ),
             ),
+            if (placemark == null)
+              const SizedBox()
+            else
+              Positioned(
+                bottom: 16,
+                right: 16,
+                left: 16,
+                child: PlacemarkWidget(
+                  detail: true,
+                  onPickMap: () {},
+                  latLng: storyLocation,
+                  placemark: placemark!,
+                ),
+              ),
           ],
         ),
       ),

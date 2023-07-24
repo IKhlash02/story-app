@@ -76,6 +76,7 @@ class _PickerPageState extends State<PickerPage> {
                 right: 16,
                 left: 16,
                 child: PlacemarkWidget(
+                  detail: false,
                   onPickMap: () => widget.onPickMap(),
                   latLng: locationDefault,
                   placemark: placemark!,

@@ -1,18 +1,21 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart' as geo;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-import 'package:story_app_1/common.dart';
 
+import 'package:story_app_1/common.dart';
 import 'package:story_app_1/provider/add_map.dart';
 
 class PlacemarkWidget extends StatelessWidget {
+  final bool detail;
   final geo.Placemark placemark;
   final LatLng latLng;
   final Function() onPickMap;
 
   const PlacemarkWidget({
     Key? key,
+    required this.detail,
     required this.placemark,
     required this.latLng,
     required this.onPickMap,
@@ -37,13 +40,15 @@ class PlacemarkWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            AppLocalizations.of(context)!.setLocation,
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
+          if (detail == false)
+            Text(
+              AppLocalizations.of(context)!.setLocation,
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
+            ),
+          if (detail == false)
+            const SizedBox(
+              height: 10,
+            ),
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
@@ -72,28 +77,32 @@ class PlacemarkWidget extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(200, 40),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+          if (detail == false)
+            const SizedBox(
+              height: 10,
+            ),
+          if (detail == false)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(200, 40),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                  ),
-                  onPressed: () {
-                    context.read<AddMapProvider>().setAlamatStory(latLng);
-                    context.read<AddMapProvider>().setStreet(placemark.street!);
+                    onPressed: () {
+                      context.read<AddMapProvider>().setAlamatStory(latLng);
+                      context
+                          .read<AddMapProvider>()
+                          .setStreet(placemark.street!);
 
-                    onPickMap();
-                  },
-                  child: Text(AppLocalizations.of(context)!.lanjut)),
-            ],
-          )
+                      onPickMap();
+                    },
+                    child: Text(AppLocalizations.of(context)!.lanjut)),
+              ],
+            )
         ],
       ),
     );
