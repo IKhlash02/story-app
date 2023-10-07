@@ -1,3 +1,4 @@
 {
-  "java.configuration.updateBuildConfiguration": "interactive"
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "cmake.sourceDirectory": "D:/Ikhlash/Computer Sience/Flutter/dicoding/Flutter Intermediate/tugas/story_app_2/linux"
 }
